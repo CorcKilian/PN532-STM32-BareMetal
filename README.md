@@ -161,11 +161,11 @@ This section documents the detailed debugging and validation process carried out
 
 - **Interrupt Mask Register (IMR):**  
   ![IMR Register](docs/STM_EXTI_IMR1.png)  
-  **Explanation:** This image shows the interrupt mask register, which must be managed to enable or disable interrupts during sensitive operations like SPI data transfers.
+  **Explanation:** This image shows the interrupt mask register, which must be managed to enable or disable interrupts.
 
 - **Rising Trigger Selection Register (RTSR):**  
   ![RTSR Register](docs/STM_EXTI_RTSR1.png)  
-  **Explanation:** Configuring the rising edge trigger is crucial to avoid false interrupts. Here, rising edge detection is disabled during SPI transactions.
+  **Explanation:** Configuring the rising edge trigger is crucial to avoid false interrupts. Here, rising edge detection is disabled.
 
 - **Falling Trigger Selection Register (FTSR):**  
   ![FTSR Register](docs/STM_EXTI_FTSR1.png)  
@@ -178,31 +178,31 @@ This section documents the detailed debugging and validation process carried out
 ### Debugging the Interrupt Issue
 
 - **Pre-Transfer Debug View:**  
-  ![Pre-Transfer Debug View](docs/Project_Debug_1.png)  
+  ![Pre-Transfer Debug View](docs/Project_Debug1.png)  
   **Explanation:** Before SPI data transmission, we examine the pending register to ensure no interrupts are flagged inadvertently.
 
 - **During SPI Data Transmission (Transfer Highlight):**  
-  ![Transfer Highlight](docs/Project_Debug_2.png)  
+  ![Transfer Highlight](docs/Project_Debug2.png)  
   **Explanation:** This image shows the code line that sends data over SPI. It is critical to monitor this step, as spurious interrupts during this phase can disrupt communication.
 
 - **Spurious Interrupt Triggered:**  
-  ![Spurious Interrupt](docs/Project_Debug_3.png)  
+  ![Spurious Interrupt](docs/Project_Debug3.png)  
   **Explanation:** Captures an unexpected interrupt, likely due to overlapping MOSI activity. Despite the oscilloscope confirming no physical low on the IRQ line, the system registers an interrupt.
 
 - **Disabling EXTI Prior to Transmission:**  
-  ![Disabling EXTI](docs/Project_Debug_4.png)  
+  ![Disabling EXTI](docs/Project_Debug4.png)  
   **Explanation:** To avoid false triggering, we temporarily disable the EXTI interrupt by modifying the IMR register before SPI transmission.
 
 - **IMR Disabled Verification:**  
-  ![IMR Disabled](docs/Project_Debug_5.png)  
+  ![IMR Disabled](docs/Project_Debug5.png)  
   **Explanation:** Verification that the interrupt mask is disabled. This prevents any unwanted interrupts during data transfer.
 
 - **No Interrupt During SPI Activity:**  
-  ![Interrupt Disabled](docs/Project_Debug_6.png)  
+  ![Interrupt Disabled](docs/Project_Debug6.png)  
   **Explanation:** With the interrupt mask disabled, the MOSI line activity no longer triggers an interrupt, confirming our workaround.
 
 - **Re-Enabling Interrupt After Transfer:**  
-  ![IMR Re-enabled](docs/Project_Debug_7.png)  
+  ![IMR Re-enabled](docs/Project_Debug7.png)  
   **Explanation:** After the SPI transfer, the interrupt mask is re-enabled to restore normal IRQ behavior.
 
 ### PN532 Command and Response Verification
