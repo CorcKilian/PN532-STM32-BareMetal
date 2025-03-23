@@ -59,8 +59,8 @@ This project aims to implement a lightweight embedded authentication system usin
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/your-repo-name.git
-cd your-repo-name
+git clone https://github.com/CorcKilian/PN532-STM32-BareMetal
+cd PN532-STM32-BareMetal
 ```
 
 ### 2. Open with VSCode
@@ -69,9 +69,12 @@ Ensure that the PlatformIO extension is installed in VSCode.
 
 ### 3. Build and Upload
 
+You can either run the following command in the terminal:
+
 ```bash
 pio run --target upload
 ```
+Or use the "Upload" button in the PlatformIO toolbar inside VSCode to flash the firmware to your STM32 board.
 
 ### 4. Open Serial Monitor
 
@@ -81,7 +84,7 @@ Use PlatformIO’s built-in serial monitor or your preferred terminal at a defau
 
 ## UART Menu System
 
-After flashing the firmware, open the serial monitor and press any key to display the following menu:
+After  uploading the program, open the serial monitor and press any key to display the following menu:
 
 ```
 --- UID Authentication System ---
