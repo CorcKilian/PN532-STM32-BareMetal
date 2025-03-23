@@ -141,6 +141,8 @@ This section documents the detailed debugging and validation process carried out
   ![Data Link Level Exchange](docs/PN532_SPI_DataLinkLevel_NormalExchange.png)  
   **Explanation:** Displays a complete SPI exchange including the command packet, the PN532’s ACK, the response packet, and the host’s optional ACK. This demonstrates end-to-end data flow.
 
+---
+
 ### External Interrupt (EXTI) and Register Configuration
 
 - **GPIO Mapping for EXTI:**  
@@ -174,6 +176,8 @@ This section documents the detailed debugging and validation process carried out
 - **Pending Register (PR):**  
   ![Pending Register](docs/STM_EXTI_PR1.png)  
   **Explanation:** The pending register indicates when an interrupt has been flagged. It is cleared by writing a '1' to it, which is important for debugging interrupt behavior.
+
+---
 
 ### Debugging the Interrupt Issue
 
@@ -210,6 +214,8 @@ This section documents the detailed debugging and validation process carried out
   **Explanation:** This verifies that we are sending correct PN532 command frames, the interrupt workaround is working. However this never returns an ACK and it was decided to give up on attempting an interrupt. 
 > **Note:** Almost certainly the issue with recieving no ACK is due to not enough time being given of SS low before sending the command. The PN532 User Manual stipulates that 1ms be given. Future improvements on this code will likely use interrupts.
 
+---
+
 ### PN532 Command and Response Verification
 
 - **Get Firmware Version Command Sent:**  
@@ -231,6 +237,8 @@ This section documents the detailed debugging and validation process carried out
 - **Expected Firmware Response:**  
   ![Expected Response](docs/Pn532_ExpectedResponse.png)  
   **Explanation:** This image shows the expected firmware response, providing a reference to validate the actual output.
+
+---
 
 ### SAM Configuration and General Status
 
@@ -258,6 +266,8 @@ This section documents the detailed debugging and validation process carried out
   ![Expected General Status](docs/PN532_GetGeneralStatus_ExpectedResponse.png)  
   **Explanation:** This image verifies that the general status response aligns with what is specified in the PN532 documentation, confirming proper SAM configuration.
 
+---
+
 ### Tag Scanning and UID Capture
 
 - **INLISTPASSIVETARGET Command with ACK:**  
@@ -272,7 +282,7 @@ This section documents the detailed debugging and validation process carried out
   ![Response Decoded](docs/PN532_LogicAnalyser_InListPassiveTarget_ResponseMeaning.png)  
   **Explanation:** Provides a table explaining the meaning of each byte in the tag response, crucial for validating the UID and communication parameters.
   
-- **scanForTag() Function Debugging:**  
+- **scanForTag() Function:**  
   ![ScanForTag Function](docs/PN532_LogicAnalyser_ScanForTag_Function.png)  
   **Explanation:** This image shows the scanForTag() function in action, including its retry mechanism when no tag is detected.
   
@@ -299,7 +309,7 @@ This project employs a modular, bare-metal C architecture based on the following
 
 - **Logic Analyzer and Oscilloscope:** Used to capture SPI signals, verify command structures, and measure IRQ timings.
 - **Serial Monitor (USART2):** Provides real-time output of command execution and system responses.
-- **Register Inspection:** CMSIS and debugger tools were used to examine and modify EXTI, SYSCFG, and power registers.
+- **Register Inspection:** CMSIS and debugger tools were used to examine and modify EXTI, SYSCFG, and other registers.
 
 ### Functional Testing
 
@@ -312,11 +322,11 @@ This project employs a modular, bare-metal C architecture based on the following
 
 ## Circuit Schematic and Demonstration
 
-- **Circuit Schematic:** A professionally drawn schematic (e.g., created with KiCad or Fritzing) details the connections between the STM32 board and the PN532 module.  
+- **Circuit Schematic:** A schematic (created with KiCad) details the connections between the STM32 board and the PN532 module.  
   ![Circuit Schematic](docs/Wiring_Diagram.png)  
   **Explanation:** This schematic illustrates how the STM32 pins are connected to the PN532.
 
-- **Video Demonstration:** A brief demonstration video (max 3 minutes) has been uploaded to YouTube, showcasing the system’s functionality in real time.  
+- **Video Demonstration:** A brief demonstration video has been uploaded to YouTube, showcasing the system’s functionality in real time.  
   [Watch the Demo](https://youtu.be/Bl1eRp9tZyk)
 
 ---
