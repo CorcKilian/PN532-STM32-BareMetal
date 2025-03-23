@@ -187,7 +187,7 @@ This section documents the detailed debugging and validation process carried out
 
 - **Spurious Interrupt Triggered:**  
   ![Spurious Interrupt](docs/Project_Debug3.png)  
-  **Explanation:** Captures an unexpected interrupt, likely due to overlapping MOSI activity. Despite the oscilloscope confirming no physical low on the IRQ line, the system registers an interrupt.
+  **Explanation:** Captures an unexpected interrupt, likely due to some hardware / crosstalk issue. Oscilloscope confirming no physical low on the IRQ line, however the system registers an interrupt.
 
 - **Disabling EXTI Prior to Transmission:**  
   ![Disabling EXTI](docs/Project_Debug4.png)  
@@ -199,28 +199,29 @@ This section documents the detailed debugging and validation process carried out
 
 - **No Interrupt During SPI Activity:**  
   ![Interrupt Disabled](docs/Project_Debug6.png)  
-  **Explanation:** With the interrupt mask disabled, the MOSI line activity no longer triggers an interrupt, confirming our workaround.
+  **Explanation:** With the interrupt mask disabled, the interrupt is no longer triggered, confirming our workaround.
 
 - **Re-Enabling Interrupt After Transfer:**  
   ![IMR Re-enabled](docs/Project_Debug7.png)  
   **Explanation:** After the SPI transfer, the interrupt mask is re-enabled to restore normal IRQ behavior.
 
+- **Sending a command with Interrupt workaround:**  
+  ![General PN532 Trace](docs/PN532_LogicAnalyser.png)  
+  **Explanation:** This verifies that we are sending correct PN532 command frames, the interrupt workaround is working. However this never returns an ACK and it was decided to give up on attempting an interrupt. 
+> **Note:** Almost certainly the issue with recieving no ACK is due to not enough time being given of SS low before sending the command. The PN532 User Manual stipulates that 1ms be given. Future improvements on this code will likely use interrupts.
+
 ### PN532 Command and Response Verification
 
-- **General PN532 Communication Trace:**  
-  ![General PN532 Trace](docs/PN532_LogicAnalyser.png)  
-  **Explanation:** Provides an overall view of the communication between the STM32 and the PN532, ensuring that the protocol is followed correctly.
-
 - **Get Firmware Version Command Sent:**  
-  ![Firmware Cmd Sent](docs/PN532_LogicAnalyser_GetFirmwareVersionCommand.png)  
+  ![Firmware Cmd Sent](docs/PN532_LogicAnalyser_GetFirwareVersionCommand.png)  
   **Explanation:** To verify command transmission, we send the “Get Firmware Version” command—a safe command that does not alter system state. This capture confirms that the command is sent properly.
 
 - **Firmware Version ACK Received:**  
-  ![Firmware ACK](docs/PN532_LogicAnalyser_GetFirmwareVersionACK.png)  
+  ![Firmware ACK](docs/PN532_LogicAnalyser_GetFirwareVersionACK.png)  
   **Explanation:** Demonstrates that the PN532 acknowledges the firmware version command by sending an ACK, validating our transmission.
 
 - **Command and ACK Handshake:**  
-  ![Command and ACK Handshake](docs/PN532_Command_and_Ack_Response_Handshake.png)  
+  ![Command and ACK Handshake](docs/PN532_Command_Ack_Response_Handshake.png)  
   **Explanation:** This handshake verifies that the command is received correctly by the PN532 and that the response is being prepared as expected.
 
 - **Response Verification via Serial Monitor:**  
@@ -238,11 +239,11 @@ This section documents the detailed debugging and validation process carried out
   **Explanation:** Shows the SAM configuration command as defined in the PN532 user manual, essential for setting the module into the correct operational mode.
 
 - **SAMConfig with ACK (Logic Analyzer):**  
-  ![SAMConfig with ACK](docs/PN532_LogicAnalyser_SAMConfig_WithACK.png)  
+  ![SAMConfig with ACK](docs/Pn532_LogicAnalyser_SAMConfig_WithACK.png)  
   **Explanation:** Confirms that upon sending the SAMConfig command, an ACK is received from the PN532, verifying proper communication.
 
 - **SAMConfig Response Capture:**  
-  ![SAMConfig Response](docs/PN532_LogicAnalyser_SAMConfig_Response.png)  
+  ![SAMConfig Response](docs/Pn532_LogicAnalyser_SAMConfig_Response.png)  
   **Explanation:** Displays the actual response from the PN532 after SAM configuration, ensuring that the module is correctly configured.
 
 - **General Status Command with ACK:**  
@@ -260,15 +261,15 @@ This section documents the detailed debugging and validation process carried out
 ### Tag Scanning and UID Capture
 
 - **INLISTPASSIVETARGET Command with ACK:**  
-  ![InListPassiveTarget with ACK](docs/PN532_LogicAnalyser_InlistPassiveTarget_WithACK.png)  
+  ![InListPassiveTarget with ACK](docs/PN532_LogicAnalyser_InListPassiveTarget_WithACK.png)  
   **Explanation:** This capture shows the command used to scan for a card and the corresponding ACK from the PN532, confirming the initiation of a tag scan.
   
 - **Tag Response Packet:**  
-  ![Tag Response](docs/PN532_LogicAnalyser_InlistPassiveTarget_Response.png)  
+  ![Tag Response](docs/PN532_LogicAnalyser_InListPassiveTarget_Response.png)  
   **Explanation:** Displays the response packet when a tag is detected, including the UID and other relevant parameters.
   
 - **Response Byte Decoding:**  
-  ![Response Decoded](docs/PN532_LogicAnalyser_InlistPassiveTarget_ResponseMeaning.png)  
+  ![Response Decoded](docs/PN532_LogicAnalyser_InListPassiveTarget_ResponseMeaning.png)  
   **Explanation:** Provides a table explaining the meaning of each byte in the tag response, crucial for validating the UID and communication parameters.
   
 - **scanForTag() Function Debugging:**  
