@@ -39,7 +39,7 @@ This project aims to implement a lightweight embedded authentication system usin
 
 ## Pin Configuration (STM32L432 ↔ PN532)
 
-| STM32 Pin | PN532 Signal | Notes                        |
+| STM32 Pin | PN532 Signal | Description                  |
 |-----------|--------------|------------------------------|
 | PA1       | SCLK         | SPI Clock                    |
 | PA7       | MOSI         | SPI Data Out                 |
@@ -47,10 +47,16 @@ This project aims to implement a lightweight embedded authentication system usin
 | PB0       | SS           | Chip Select (manual control) |
 | PA8       | RESET        | PN532 Reset line             |
 | PB1       | IRQ          | PN532 Interrupt (active low) |
+
+> **Note:** Ensure that the PN532 is set to **SPI mode** by verifying its jumper configuration.
+
+## Pin Configuration (ST32L432 Terminal)
+| STM32 Pin | Function     | Description                  |
+|-----------|--------------|------------------------------|
 | PA2       | USART2_TX    | UART output to terminal      |
 | PA15      | USART2_RX    | UART input from terminal     |
 
-> **Note:** Ensure that the PN532 is set to **SPI mode** by verifying its jumper configuration.
+> **Note:** PA15 and PA2 require no external wiring as they are internally connected to the USB port
 
 ---
 
@@ -109,7 +115,7 @@ After  uploading the program, open the serial monitor and press any key to displ
 | `auth.c/h`       | UID whitelist management functions           |
 | `PN532.c/h`      | Low-level communication with the PN532 module |
 | `spi.c/h`        | SPI abstraction layer                        |
-| `eeng1030_lib.*` | Clock, GPIO, and system utilities            |
+| `eeng1030_lib.c/h` | Clock, GPIO, and system utilities            |
 
 ---
 
@@ -284,7 +290,7 @@ This section documents the detailed debugging and validation process carried out
   
 - **scanForTag() Function:**  
   ![ScanForTag Function](docs/PN532_LogicAnalyser_ScanForTag_Function.png)  
-  **Explanation:** This image shows the scanForTag() function in action, including its retry mechanism when no tag is detected.
+  **Explanation:** This image shows the scanForTag() function in action, including its retry mechanism when no tag is detected (retries ~ every 230ms for a total of 3 attempts (configurable)).
   
 - **Successful Tag Scan:**  
   ![ScanForTag Working](docs/PN532_LogicAnalyser_ScanForTag_Working.png)  
@@ -297,7 +303,7 @@ This section documents the detailed debugging and validation process carried out
 This project employs a modular, bare-metal C architecture based on the following principles:
 
 - **Direct Hardware Control:** All peripheral interactions (SPI, GPIO, interrupts) are handled through direct register manipulation, bypassing vendor HAL libraries.
-- **Modular Structure:** Separate modules for NFC communication (`PN532.c/h`), SPI transfer (`spi.c/h`), and system-level utilities (`eeng1030_lib.*`) allow for easy maintenance and scalability.
+- **Modular Structure:** Separate modules for NFC communication (`PN532.c/h`), SPI transfer (`spi.c/h`), and system-level utilities (`eeng1030_lib.c/h`) allow for easy maintenance and scalability.
 - **Robust Debugging:** Extensive use of logic analyzers, register inspections, and serial monitor outputs ensures each communication step is verified and validated.
 - **Comprehensive Documentation:** Inline comments, this README, and supplementary images provide a detailed account of system design, testing, and debugging in line with industrial standards.
 
