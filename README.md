@@ -50,7 +50,7 @@ This project aims to implement a lightweight embedded authentication system usin
 
 > **Note:** Ensure that the PN532 is set to **SPI mode** by verifying its jumper configuration.
 
-## Pin Configuration (ST32L432 Terminal)
+## Pin Configuration (ST32L432 ↔ Terminal)
 | STM32 Pin | Function     | Description                  |
 |-----------|--------------|------------------------------|
 | PA2       | USART2_TX    | UART output to terminal      |
