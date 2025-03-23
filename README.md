@@ -156,7 +156,7 @@ This section documents the detailed debugging and validation process carried out
   **Explanation:** To configure the interrupt, we use the EXTI configuration register (EXTICR). This image displays the register layout, which is used to map EXTI1 to the desired port (e.g., PB1).
 
 - **EXTICR Bit Configuration:**  
-  ![EXTICR Bits](docs/STM_SYSCFG_EXTICR1_EXTIC1ConfigBits.png)  
+  ![EXTICR Bits](docs/STM_SYSCFG_EXTICR1_EXTI1ConfigBits.png)  
   **Explanation:** Details the bit settings required for assigning EXTI1 to the correct pin. This ensures that when PB1 goes low, an interrupt is triggered as intended.
 
 - **Interrupt Mask Register (IMR):**  
